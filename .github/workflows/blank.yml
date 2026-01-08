@@ -3,7 +3,9 @@ name: Atualizar Versões e Hashes
 on:
   push:
     paths:
+      - '**client/AntiL7ck.jar'      # Aceita com ou sem barra inicial
       - 'client/AntiL7ck.jar'
+      - '**launcher/launcher.jar'
       - 'launcher/launcher.jar'
 
 jobs:
