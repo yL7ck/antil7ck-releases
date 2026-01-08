@@ -1,0 +1,86 @@
+name: Atualizar Versões e Hashes
+
+on:
+  push:
+    paths:
+      - 'client/AntiL7ck.jar'
+      - 'launcher/launcher.jar'
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout com histórico completo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Necessário pra diff funcionar em múltiplos commits
+
+      - name: Pegar arquivos alterados no push
+        id: changed-files
+        run: |
+          # Pega todos os arquivos alterados nesse push (funciona com múltiplos commits)
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          echo "Arquivos alterados:"
+          echo "$CHANGED"
+
+          # Filtra só os que nos interessam
+          if echo "$CHANGED" | grep -q "^client/AntiL7ck.jar$"; then
+            echo "type=client" >> $GITHUB_OUTPUT
+            echo "file=client/AntiL7ck.jar" >> $GITHUB_OUTPUT
+            echo "path=./client/AntiL7ck.jar" >> $GITHUB_OUTPUT
+          elif echo "$CHANGED" | grep -q "^launcher/launcher.jar$"; then
+            echo "type=launcher" >> $GITHUB_OUTPUT
+            echo "file=launcher/launcher.jar" >> $GITHUB_OUTPUT
+            echo "path=./launcher/launcher.jar" >> $GITHUB_OUTPUT
+          else
+            echo "Nenhum .jar relevante foi alterado. Saindo."
+            exit 0
+          fi
+
+      - name: Calcular hashes
+        id: hashes
+        run: |
+          FILE="${{ steps.changed-files.outputs.file }}"
+          SHA256=$(sha256sum "$FILE" | awk '{print $1}')
+          MD5=$(md5sum "$FILE" | awk '{print $1}')
+          echo "sha256=$SHA256" >> $GITHUB_OUTPUT
+          echo "md5=$MD5" >> $GITHUB_OUTPUT
+
+      - name: Atualizar version.json e updates.json
+        run: |
+          TYPE="${{ steps.changed-files.outputs.type }}"
+          SHA256="${{ steps.hashes.outputs.sha256 }}"
+          MD5="${{ steps.hashes.outputs.md5 }}"
+
+          # Incrementar versão (patch)
+          CURRENT=$(jq -r ".${TYPE}Version" version.json)
+          if [[ "$CURRENT" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            MAJOR=${BASH_REMATCH[1]}
+            MINOR=${BASH_REMATCH[2]}
+            PATCH=$(( ${BASH_REMATCH[3]} + 1 ))
+            NEW="v${MAJOR}.${MINOR}.${PATCH}"
+          else
+            NEW="v1.0.0"
+          fi
+
+          jq ".${TYPE}Version = \"$NEW\"" version.json > tmp.json && mv tmp.json version.json
+
+          if [ "$TYPE" = "client" ]; then
+            jq ".clientHashMD5 = \"$MD5\" | .clientHashSHA256 = \"$SHA256\"" version.json > tmp.json && mv tmp.json version.json
+          fi
+
+          # Atualiza updates.json com o path exato
+          jq --arg p "${{ steps.changed-files.outputs.path }}" --arg h "$SHA256" '
+            map(if .path == $p then .hash = $h else . end)
+          ' updates.json > tmp.json && mv tmp.json updates.json
+
+      - name: Commit e push das mudanças
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add version.json updates.json
+          git commit -m "Auto: nova versão ${{ steps.changed-files.outputs.type }} v$NEW [skip ci]" || echo "Nada para commitar"
+          git push
