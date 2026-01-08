@@ -1,0 +1,68 @@
+name: Atualizar Versões e Hashes
+
+on:
+  push:
+    paths:
+      - 'client/AntiL7ck.jar'
+      - 'launcher/launcher.jar'
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar arquivo alterado
+        id: detect
+        run: |
+          if git diff --name-only HEAD~1 | grep -q "client/AntiL7ck.jar"; then
+            echo "type=client" >> $GITHUB_OUTPUT
+            echo "file=client/AntiL7ck.jar"
+          elif git diff --name-only HEAD~1 | grep -q "launcher/launcher.jar"; then
+            echo "type=launcher" >> $GITHUB_OUTPUT
+            echo "file=launcher/launcher.jar"
+          fi
+
+      - name: Calcular hashes
+        id: hashes
+        run: |
+          FILE="${{ steps.detect.outputs.file }}"
+          SHA256=$(sha256sum "$FILE" | awk '{print $1}')
+          MD5=$(md5sum "$FILE" | awk '{print $1}')
+          echo "sha256=$SHA256" >> $GITHUB_OUTPUT
+          echo "md5=$MD5" >> $GITHUB_OUTPUT
+
+      - name: Atualizar version.json e updates.json
+        run: |
+          TYPE="${{ steps.detect.outputs.type }}"
+          SHA256="${{ steps.hashes.outputs.sha256 }}"
+          MD5="${{ steps.hashes.outputs.md5 }}"
+
+          # Incrementar versão
+          CURRENT=$(jq -r ".${TYPE}Version" version.json)
+          if [[ "$CURRENT" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            PATCH=$(( ${BASH_REMATCH[3]} + 1 ))
+            NEW="v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${PATCH}"
+          else
+            NEW="v1.0.0"
+          fi
+
+          jq ".${TYPE}Version = \"$NEW\"" version.json > tmp && mv tmp version.json
+
+          if [ "$TYPE" = "client" ]; then
+            jq ".clientHashMD5 = \"$MD5\" | .clientHashSHA256 = \"$SHA256\"" version.json > tmp && mv tmp version.json
+          fi
+
+          PATH="./${TYPE}/$(basename ${{ steps.detect.outputs.file }})"
+          jq --arg p "$PATH" --arg h "$SHA256" '(map(if .path == $p then .hash = $h else . end))' updates.json > tmp && mv tmp updates.json
+
+      - name: Commit e push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add version.json updates.json
+          git commit -m "Auto: nova versão ${{ steps.detect.outputs.type }} [skip ci]" || exit 0
+          git push
