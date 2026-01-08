@@ -3,9 +3,7 @@ name: Atualizar Versões e Hashes
 on:
   push:
     paths:
-      - '**client/AntiL7ck.jar'      # Aceita com ou sem barra inicial
-      - 'client/AntiL7ck.jar'
-      - '**launcher/launcher.jar'
+      - 'versions/AntiL7ck/AntiL7ck.jar'
       - 'launcher/launcher.jar'
 
 jobs:
@@ -29,10 +27,10 @@ jobs:
           echo "$CHANGED"
 
           # Filtra só os que nos interessam
-          if echo "$CHANGED" | grep -q "^client/AntiL7ck.jar$"; then
+          if echo "$CHANGED" | grep -q "^versions/AntiL7ck/AntiL7ck.jar$"; then
             echo "type=client" >> $GITHUB_OUTPUT
-            echo "file=client/AntiL7ck.jar" >> $GITHUB_OUTPUT
-            echo "path=./client/AntiL7ck.jar" >> $GITHUB_OUTPUT
+            echo "file=versions/AntiL7ck/AntiL7ck.jar" >> $GITHUB_OUTPUT
+            echo "path=./versions/AntiL7ck/AntiL7ck.jar" >> $GITHUB_OUTPUT
           elif echo "$CHANGED" | grep -q "^launcher/launcher.jar$"; then
             echo "type=launcher" >> $GITHUB_OUTPUT
             echo "file=launcher/launcher.jar" >> $GITHUB_OUTPUT
