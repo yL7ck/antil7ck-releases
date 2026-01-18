@@ -17,7 +17,7 @@
       "name": "net.java.jutils:jutils:1.0.0"
     },
     {
-      "name": "org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209",
+      "name": "org.lwjgl.lwjgl:lwjgl:2.9.3",
       "rules": [
         {
           "action": "allow"
@@ -29,10 +29,10 @@
             "version": "^10\\.5\\.\\d$"
           }
         }
-      ],
+      ]
     },
     {
-      "name": "org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209",
+      "name": "org.lwjgl.lwjgl:lwjgl_util:2.9.3",
       "rules": [
         {
           "action": "allow"
@@ -44,10 +44,10 @@
             "version": "^10\\.5\\.\\d$"
           }
         }
-      ],
+      ]
     },
     {
-      "name": "org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209",
+      "name": "org.lwjgl.lwjgl:lwjgl-platform:2.9.3",
       "rules": [
         {
           "action": "allow"
@@ -63,20 +63,20 @@
       "natives": {
         "linux": {
           "artifact": {
-            "path": "org/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-linux.jar",
-            "url": "https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-linux.jar"
+            "path": "org/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-linux.jar",
+            "url": "https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-linux.jar"
           }
         },
         "macos": {
           "artifact": {
-            "path": "org/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar",
-            "url": "https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-osx.jar"
+            "path": "org/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-osx.jar",
+            "url": "https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-osx.jar"
           }
         },
         "windows": {
           "artifact": {
-            "path": "org/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar",
-            "url": "https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl-platform/2.9.4-nightly-20150209/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar"
+            "path": "org/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-windows.jar",
+            "url": "https://libraries.minecraft.net/org/lwjgl/lwjgl/lwjgl-platform/2.9.3/lwjgl-platform-2.9.3-natives-windows.jar"
           }
         }
       }
@@ -92,9 +92,9 @@
         },
         "macos": {
           "artifact": {
-            "path": "net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-linux.jar",
+            "path": "net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-osx.jar",
             "url": "https://libraries.minecraft.net/net/java/jinput/jinput-platform/2.0.5/jinput-platform-2.0.5-natives-osx.jar"
-          } 
+          }
         },
         "windows": {
           "artifact": {
