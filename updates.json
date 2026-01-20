@@ -1,7 +1,7 @@
 [
   {
     "path": "./launcher/launcher.jar",
-    "hash": ""
+    "hash": "40d85051d73bc6213ef3dc11cdbadd6c55d1ccb1826adbff7578177eb75dc170"
   },
   {
     "path": "./libraries/com/google/code/gson/gson/2.2.4/gson-2.2.4.jar",
