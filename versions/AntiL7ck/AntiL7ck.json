@@ -8,6 +8,15 @@
       "name": "net.sf.jopt-simple:jopt-simple:4.5"
     },
     {
+      "name": "com.google.guava:guava:14.0-rc3"
+    },
+    {
+      "name": "org.bouncycastle:bcprov-jdk15on:1.48"
+    },
+    {
+      "name": "it.unimi.dsi:fastutil:6.5.7"
+    },
+    {
       "name": "org.ow2.asm:asm-all:4.1"
     },
     {
@@ -15,6 +24,9 @@
     },
     {
       "name": "net.java.jutils:jutils:1.0.0"
+    },
+    {
+      "name": "com.google.code.gson:gson:2.2.4"
     },
     {
       "name": "org.lwjgl.lwjgl:lwjgl:2.9.3",
