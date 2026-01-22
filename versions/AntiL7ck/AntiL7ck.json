@@ -29,6 +29,9 @@
       "name": "com.google.code.gson:gson:2.2.4"
     },
     {
+      "name": "org.json:json:20140107"
+    },
+    {
       "name": "org.lwjgl.lwjgl:lwjgl:2.9.3",
       "rules": [
         {
