@@ -1,8 +1,8 @@
 {
-  "clientVersion": "v1.0.9",
+  "clientVersion": "v1.0.10",
   "launcherVersion": "v1.0.9",
-  "clientHashMD5": "a5560e28f340e4a52b6b2fae741db1ef",
-  "clientHashSHA256": "b8bdac030966339bed1b236ffbc961a860af95e5403bb5db130e0305e5c3d7f7",
+  "clientHashMD5": "60a06f46a0aa1cab2eb3b34e897b655c",
+  "clientHashSHA256": "6a142e47afa16f7f857259b2259485c90601c6ee28fdda1a7a8a57e57629a700",
   "clientDownloadUrl": "https://raw.githubusercontent.com/yL7ck/antil7ck-releases/master/client/AntiL7ck.jar",
   "launcherDownloadUrl": "https://raw.githubusercontent.com/yL7ck/antil7ck-releases/master/launcher/launcher.jar"
 }
